@@ -7,36 +7,34 @@
 
 <style>
 
-@font-face {
-  font-family: "Boston";
-  src: url("boston.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
+@font-face{
+  font-family:"Boston";
+  src:url("boston.ttf") format("truetype");
+  font-weight:normal;
+  font-style:normal;
 }
 
 :root{
-  --page-bg: #fdf5e3;
-  --maxW: 1280px;
+  --page-bg:#fdf5e3;
+  --maxW:1280px;
 
-  --ink: #4a3a2d;
-  --ink2: rgba(74,58,45,.82);
+  --ink:#4a3a2d;
+  --ink2:rgba(74,58,45,.82);
 
   /* MORE SIDE MARGIN */
-  --bodyPadX: clamp(60px, 10vw, 220px);
-  --bodyPadTop: 48px;
-  --bodyPadBottom: 40px;
+  --bodyPadX:clamp(72px, 11vw, 260px);
+  --bodyPadTop:48px;
+  --bodyPadBottom:40px;
 
-  --fieldBg: rgba(253,245,227,.55);
-  --fieldStroke: rgba(74,58,45,.18);
-  --btnBg: rgba(74,58,45,.92);
-  --btnText: #f7f1e8;
+  --fieldBg:rgba(253,245,227,.55);
+  --fieldStroke:rgba(74,58,45,.18);
+  --btnBg:rgba(74,58,45,.92);
+  --btnText:#f7f1e8;
 }
 
 *{ box-sizing:border-box; }
 
-html,body{
-  height:100%;
-}
+html,body{ height:100%; }
 
 body{
   margin:0;
@@ -53,12 +51,9 @@ body{
   padding:18px 12px 50px;
 }
 
-.poster{
-  width:min(var(--maxW),100%);
-}
+.poster{ width:min(var(--maxW),100%); }
 
 /* Sections */
-
 .section{
   width:100%;
   background-position:top center;
@@ -82,16 +77,28 @@ body{
 .footer{
   aspect-ratio:1280/279;
   background-image:url("footer.png");
+  position:relative;
+}
+
+.footer-callout{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:16px;
+  width:min(92%, 900px);
+  text-align:center;
+  font-size:12px;
+  color:rgba(74,58,45,.84);
 }
 
 /* Text */
-
 .body p{
   margin:0 0 16px;
   line-height:1.65;
   font-size:clamp(16px,1.35vw,19px);
   color:var(--ink2);
   text-align:justify;
+  text-align-last:center;
 }
 
 .section-title{
@@ -102,8 +109,89 @@ body{
   font-size:13px;
 }
 
-/* FLAT FORM */
+.small{
+  font-size:13px;
+  margin-top:-6px;
+  color:rgba(74,58,45,.78);
+  text-align:center;
+}
 
+.hr{
+  height:1px;
+  border:0;
+  border-top:1px dashed rgba(74,58,45,.25);
+  margin:18px 0;
+}
+
+/* Language toggle */
+.langbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin:0 0 12px;
+}
+
+.langbtns{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.langbtn{
+  border:1px solid rgba(74,58,45,.22);
+  background:transparent;
+  color:rgba(74,58,45,.9);
+  padding:6px 10px;
+  border-radius:999px;
+  cursor:pointer;
+  font-family:"Boston";
+  font-size:12px;
+  letter-spacing:.02em;
+}
+
+.langbtn[aria-pressed="true"]{
+  border-color:rgba(74,58,45,.55);
+}
+
+.readmore{
+  border:0;
+  background:transparent;
+  color:rgba(74,58,45,.9);
+  cursor:pointer;
+  font-family:"Boston";
+  font-size:12px;
+  text-decoration:underline;
+  padding:6px 0;
+}
+
+.intro-1line{
+  margin:0 0 10px;
+  font-size:clamp(16px,1.5vw,20px);
+  color:rgba(74,58,45,.92);
+  text-align:center;
+}
+
+.readmore-panel{
+  display:none;
+  margin-top:10px;
+}
+
+.readmore-panel.is-open{
+  display:block;
+}
+
+/* Condensed mobile */
+.longcopy{ display:block; }
+.shortcopy{ display:none; }
+
+@media (max-width:720px){
+  :root{ --bodyPadX:28px; }
+  .longcopy{ display:none; }
+  .shortcopy{ display:block; }
+}
+
+/* FLAT FORM */
 .sign-area{
   margin-top:10px;
   padding:0;
@@ -122,9 +210,7 @@ form{
   gap:6px;
 }
 
-label{
-  font-size:12px;
-}
+label{ font-size:12px; }
 
 input{
   padding:11px 12px;
@@ -148,7 +234,6 @@ input{
 }
 
 /* SIGNATURES — COMPLETELY FLAT */
-
 .signatures{
   margin-top:18px;
   border-top:1px dashed rgba(74,58,45,.25);
@@ -162,34 +247,16 @@ input{
   background:none;
 }
 
-.sig .who{
-  font-weight:700;
-}
+.sig .who{ font-weight:700; }
+.sig .meta{ font-size:13px; }
+.empty{ padding:6px 0; }
 
-.sig .meta{
-  font-size:13px;
-}
-
-.empty{
-  padding:6px 0;
-}
-
-/* MOBILE */
+/* remove any background when signatures appear */
+.sig, .signatures, #sigList{ background:transparent; }
 
 @media(max-width:720px){
-
-  :root{
-    --bodyPadX:24px;
-  }
-
-  form{
-    grid-template-columns:1fr;
-  }
-
-  .sig{
-    flex-direction:column;
-  }
-
+  form{ grid-template-columns:1fr; }
+  .sig{ flex-direction:column; }
 }
 
 </style>
@@ -198,97 +265,289 @@ input{
 <body>
 
 <div class="page">
-<div class="poster">
+  <div class="poster">
 
-<section class="section header"></section>
+    <section class="section header"></section>
 
-<section class="section body">
+    <section class="section body">
 
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt, metus et iaculis dignissim, lorem lorem luctus massa, vel mattis massa lorem id est.</p>
+      <!-- language / read more -->
+      <div class="langbar">
+        <div class="langbtns" role="tablist" aria-label="Language">
+          <button class="langbtn" type="button" data-lang="en" aria-pressed="true">English</button>
+          <button class="langbtn" type="button" data-lang="es" aria-pressed="false">Español</button>
+          <button class="langbtn" type="button" data-lang="ht" aria-pressed="false">Kreyòl Ayisyen</button>
+        </div>
 
-<p>Praesent feugiat, metus non posuere porttitor, orci lectus aliquet eros, a condimentum arcu arcu id nulla. Duis nec sapien ac ante sagittis feugiat.</p>
+        <button class="readmore" type="button" id="readMoreBtn">Read more</button>
+      </div>
 
-<p>Donec at lectus sed massa placerat porttitor. Curabitur elementum, velit sed ullamcorper tincidunt.</p>
+      <!-- one-sentence intro (switches by language) -->
+      <div class="intro-1line" id="introOneLine"></div>
 
-<div class="section-title">Sign the Declaration</div>
+      <!-- condensed mobile + full copy (toggles by language + read more) -->
+      <div class="readmore-panel" id="readMorePanel">
 
-<div class="sign-area">
+        <!-- ENGLISH -->
+        <div class="copy copy-en">
+          <div class="shortcopy">
+            <p>We’re calling on Boston and Massachusetts to officially recognize June 17th as <strong>#617Day</strong>—a yearly celebration of our neighborhoods, culture, and small businesses, powered by community pride and economic opportunity.</p>
+          </div>
 
-<form id="signForm">
+          <div class="longcopy">
+            <p>June 17th — <strong>#617Day</strong> — is more than a date. It’s a celebration of Boston’s heartbeat: our neighborhoods, our creativity, our businesses, and our history—anchored in the iconic <strong>617</strong> area code.</p>
+            <p>We’re asking Boston and Massachusetts to officially recognize June 17th as an annual civic celebration starting this year, with inclusive programming designed for all Bostonians and real benefits for local businesses and cultural institutions.</p>
 
-<div class="field">
-<label>First name</label>
-<input id="firstName" required>
-</div>
+            <div class="hr"></div>
 
-<div class="field">
-<label>Last name</label>
-<input id="lastName" required>
-</div>
+            <p><strong>What #617Day can look like:</strong> $6.17 admission at participating museums/zoos/gardens, $6.17 specials (or 61.7% promotions) at local restaurants and shops, neighborhood storytelling, artist showcases, and a flagship gathering near Copley Square/Boylston that brings the city together.</p>
 
-<div class="field full">
-<label>Part of the city</label>
-<input id="area" required>
-</div>
+            <p><strong>Why it matters:</strong> It boosts small business revenue, strengthens civic pride, supports equitable economic opportunity, and spotlights Boston stories—<em>From Our Streets to the World</em>.</p>
 
-<div class="field">
-<label>Email</label>
-<input id="email" type="email" required>
-</div>
+            <p><strong>What your signature does:</strong> Your name shows public support as this proposal moves through City Council, state leaders, and cultural/economic agencies to make #617Day a permanent part of Boston’s civic calendar.</p>
+          </div>
+        </div>
 
-<div class="field">
-<label>Zip</label>
-<input id="zip" inputmode="numeric" pattern="\d{5}" minlength="5" maxlength="5" required>
-</div>
+        <!-- SPANISH -->
+        <div class="copy copy-es" style="display:none;">
+          <div class="shortcopy">
+            <p>Pedimos que Boston y Massachusetts reconozcan oficialmente el 17 de junio como <strong>#617Day</strong>: una celebración anual de nuestros vecindarios, cultura y pequeños negocios, basada en orgullo comunitario y oportunidad económica.</p>
+          </div>
 
-<button class="btn">Sign</button>
+          <div class="longcopy">
+            <p>El 17 de junio — <strong>#617Day</strong> — es más que una fecha. Es una celebración del corazón de Boston: nuestros vecindarios, creatividad, negocios e historia, inspirada en el icónico código de área <strong>617</strong>.</p>
+            <p>Queremos que Boston y Massachusetts lo reconozcan oficialmente como una celebración cívica anual desde este año, con programación inclusiva para toda la comunidad y beneficios reales para negocios locales e instituciones culturales.</p>
 
-</form>
+            <div class="hr"></div>
 
-<div class="signatures">
-<div class="section-title">Signatures</div>
-<div id="sigList"></div>
-</div>
+            <p><strong>Cómo se vería #617Day:</strong> entrada de $6.17 en museos/zoos/jardines participantes; especiales de $6.17 (o 61.7% de descuento) en restaurantes y comercios locales; historias de vecindarios, exhibiciones de artistas y un evento ancla cerca de Copley Square/Boylston.</p>
 
-</div>
+            <p><strong>Por qué importa:</strong> apoya a pequeños negocios, fortalece el orgullo cívico, crea oportunidades económicas más equitativas y amplifica las historias de Boston—<em>De nuestras calles al mundo</em>.</p>
 
-</section>
+            <p><strong>Qué hace tu firma:</strong> demuestra apoyo público mientras esta propuesta avanza por el Concejo Municipal, líderes estatales y agencias culturales/económicas para convertir #617Day en una tradición anual.</p>
+          </div>
+        </div>
 
-<section class="section footer"></section>
+        <!-- HAITIAN CREOLE -->
+        <div class="copy copy-ht" style="display:none;">
+          <div class="shortcopy">
+            <p>N ap mande Boston ak Massachusetts pou rekonèt ofisyèlman 17 Jen kòm <strong>#617Day</strong>—yon selebrasyon chak ane pou katye nou yo, kilti nou, ak ti biznis yo, ak fyète kominote ak opòtinite ekonomik.</p>
+          </div>
 
-</div>
+          <div class="longcopy">
+            <p>17 Jen — <strong>#617Day</strong> — se plis pase yon dat. Se selebrasyon kè Boston: katye nou yo, kreyativite nou, biznis nou yo, ak istwa nou—ki mare ak kòd zòn ikonik <strong>617</strong>.</p>
+            <p>N ap mande pou Boston ak Massachusetts rekonèt li ofisyèlman kòm yon selebrasyon sivik chak ane, apati ane sa a, ak pwogram ki enklizif pou tout moun epi ki pote benefis reyèl pou ti biznis ak enstitisyon kiltirèl yo.</p>
+
+            <div class="hr"></div>
+
+            <p><strong>Kijan #617Day ka ye:</strong> antre $6.17 nan mize/zo/jaden ki patisipe; espesyal $6.17 (oswa 61.7% rabè) nan restoran ak magazen lokal; istwa katye yo, prezantasyon atis, epi yon gwo rasanbleman bò Copley Square/Boylston.</p>
+
+            <p><strong>Poukisa sa enpòtan:</strong> li bay ti biznis plis revni, li ranfòse fyète sivik, li kreye plis opòtinite ekonomik ki jis, epi li mete istwa Boston yo pi lwen—<em>Soti nan lari nou yo pou rive nan mond lan</em>.</p>
+
+            <p><strong>Sa siyati ou fè:</strong> li montre sipò piblik pandan pwopozisyon an ap pase nan City Council, lidè Leta, ak ajans kiltirèl/ekonomik pou fè #617Day vin yon tradisyon chak ane.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="section-title" id="signTitle">Sign the Declaration</div>
+      <div class="small" id="microCta">Add your name below.</div>
+
+      <div class="sign-area">
+
+        <form id="signForm">
+
+          <div class="field">
+            <label id="lblFirst">First name</label>
+            <input id="firstName" required>
+          </div>
+
+          <div class="field">
+            <label id="lblLast">Last name</label>
+            <input id="lastName" required>
+          </div>
+
+          <div class="field full">
+            <label id="lblArea">Part of the city</label>
+            <input id="area" required>
+          </div>
+
+          <div class="field">
+            <label id="lblEmail">Email</label>
+            <input id="email" type="email" required>
+          </div>
+
+          <div class="field">
+            <label id="lblZip">Zip</label>
+            <input id="zip" inputmode="numeric" pattern="\d{5}" minlength="5" maxlength="5" required>
+          </div>
+
+          <button class="btn" id="btnSign">Sign</button>
+
+        </form>
+
+        <div class="signatures">
+          <div class="section-title" style="margin-top:0" id="sigTitle">Signatures</div>
+          <div id="sigList"></div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="section footer">
+      <div class="footer-callout" id="footerCallout">
+        Want to help bring #617Day to life? Partner, volunteer, or host an activation: 617DayBoston@gmail.com • @617DayBoston
+      </div>
+    </section>
+
+  </div>
 </div>
 
 <script>
-
 const STORAGE_KEY="decl617_signatures_v1";
+const langBtns=[...document.querySelectorAll(".langbtn")];
+const readMoreBtn=document.getElementById("readMoreBtn");
+const readMorePanel=document.getElementById("readMorePanel");
+const introOneLine=document.getElementById("introOneLine");
 
-function loadSigs(){return JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");}
-function saveSigs(s){localStorage.setItem(STORAGE_KEY,JSON.stringify(s));}
+const UI={
+  en:{
+    intro:"Help make June 17th officially recognized as #617Day—Boston’s annual celebration of culture, neighborhoods, and local businesses.",
+    readMore:"Read more",
+    readLess:"Read less",
+    signTitle:"Sign the Declaration",
+    microCta:"Add your name below.",
+    sigTitle:"Signatures",
+    labels:{first:"First name", last:"Last name", area:"Part of the city", email:"Email", zip:"Zip"},
+    btn:"Sign",
+    footer:"Want to help bring #617Day to life? Partner, volunteer, or host an activation: 617DayBoston@gmail.com • @617DayBoston"
+  },
+  es:{
+    intro:"Ayúdanos a que el 17 de junio sea reconocido oficialmente como #617Day—una celebración anual de la cultura, vecindarios y negocios locales de Boston.",
+    readMore:"Leer más",
+    readLess:"Leer menos",
+    signTitle:"Firma la Declaración",
+    microCta:"Agrega tu nombre abajo.",
+    sigTitle:"Firmas",
+    labels:{first:"Nombre", last:"Apellido", area:"Parte de la ciudad", email:"Correo", zip:"Código postal"},
+    btn:"Firmar",
+    footer:"¿Quieres apoyar #617Day? Sé socio, voluntario o anfitrión de una activación: 617DayBoston@gmail.com • @617DayBoston"
+  },
+  ht:{
+    intro:"Ede nou fè 17 Jen vin rekonèt ofisyèlman kòm #617Day—selebrasyon chak ane Boston pou kilti, katye, ak biznis lokal yo.",
+    readMore:"Li plis",
+    readLess:"Li mwens",
+    signTitle:"Siyen Deklarasyon an",
+    microCta:"Mete non ou anba a.",
+    sigTitle:"Siyati yo",
+    labels:{first:"Prenon", last:"Siyati", area:"Ki pati vil la", email:"Imèl", zip:"Kòd postal"},
+    btn:"Siyen",
+    footer:"Ou vle ede fè #617Day rive? Vin patnè, volontè, oswa òganize yon aktivasyon: 617DayBoston@gmail.com • @617DayBoston"
+  }
+};
 
-function render(){
-const list=document.getElementById("sigList");
-const sigs=loadSigs().slice(-12).reverse();
-if(!sigs.length){list.innerHTML="Be the first to sign.";return;}
-list.innerHTML=sigs.map(s=>`<div class="sig"><div class="who">${s.firstName} ${s.lastName[0]}.</div><div class="meta">${s.area} • ${s.zip}</div></div>`).join("");
+let currentLang="en";
+
+function setLang(lang){
+  currentLang=lang;
+
+  // toggle pressed
+  langBtns.forEach(b=>b.setAttribute("aria-pressed", b.dataset.lang===lang ? "true":"false"));
+
+  // show correct copy blocks
+  document.querySelectorAll(".copy").forEach(el=>el.style.display="none");
+  document.querySelectorAll(".copy-"+lang).forEach(el=>el.style.display="block");
+
+  // update UI strings
+  introOneLine.textContent=UI[lang].intro;
+  readMoreBtn.textContent = readMorePanel.classList.contains("is-open") ? UI[lang].readLess : UI[lang].readMore;
+
+  document.getElementById("signTitle").textContent=UI[lang].signTitle;
+  document.getElementById("microCta").textContent=UI[lang].microCta;
+  document.getElementById("sigTitle").textContent=UI[lang].sigTitle;
+
+  document.getElementById("lblFirst").textContent=UI[lang].labels.first;
+  document.getElementById("lblLast").textContent=UI[lang].labels.last;
+  document.getElementById("lblArea").textContent=UI[lang].labels.area;
+  document.getElementById("lblEmail").textContent=UI[lang].labels.email;
+  document.getElementById("lblZip").textContent=UI[lang].labels.zip;
+
+  document.getElementById("btnSign").textContent=UI[lang].btn;
+  document.getElementById("footerCallout").textContent=UI[lang].footer;
 }
 
-document.getElementById("signForm").addEventListener("submit",e=>{
-e.preventDefault();
-const sigs=loadSigs();
-sigs.push({
-firstName:firstName.value.trim(),
-lastName:lastName.value.trim(),
-area:area.value.trim(),
-email:email.value.trim(),
-zip:zip.value.trim()
-});
-saveSigs(sigs);
-location.reload();
+langBtns.forEach(btn=>{
+  btn.addEventListener("click", ()=> setLang(btn.dataset.lang));
 });
 
+readMoreBtn.addEventListener("click", ()=>{
+  readMorePanel.classList.toggle("is-open");
+  readMoreBtn.textContent = readMorePanel.classList.contains("is-open") ? UI[currentLang].readLess : UI[currentLang].readMore;
+});
+
+function loadSigs(){ return JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]"); }
+function saveSigs(s){ localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }
+
+function escapeHtml(str){
+  return String(str)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function cap(s){
+  if(!s) return "";
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+function render(){
+  const list=document.getElementById("sigList");
+  const sigs=loadSigs().slice(-12).reverse();
+  if(!sigs.length){
+    list.innerHTML=`<div class="empty">Be the first to sign.</div>`;
+    return;
+  }
+  list.innerHTML=sigs.map(s=>{
+    const first=cap((s.firstName||"").trim());
+    const last=(s.lastName||"").trim();
+    const li=last ? (last[0].toUpperCase()+".") : "";
+    const area=(s.area||"").trim();
+    const zip=(s.zip||"").trim();
+    return `<div class="sig"><div class="who">${escapeHtml((first+" "+li).trim())}</div><div class="meta">${escapeHtml(area+" • "+zip)}</div></div>`;
+  }).join("");
+}
+
+document.getElementById("signForm").addEventListener("submit", e=>{
+  e.preventDefault();
+
+  const firstName=firstNameEl.value.trim();
+  const lastName=lastNameEl.value.trim();
+  const area=areaEl.value.trim();
+  const email=emailEl.value.trim();
+  const zip=zipEl.value.trim();
+
+  if(!/^\d{5}$/.test(zip)){
+    alert("Please enter a valid 5-digit zip code.");
+    return;
+  }
+
+  const sigs=loadSigs();
+  sigs.push({ firstName, lastName, area, email, zip, signedAt:new Date().toISOString() });
+  saveSigs(sigs);
+  location.reload();
+});
+
+const firstNameEl=document.getElementById("firstName");
+const lastNameEl=document.getElementById("lastName");
+const areaEl=document.getElementById("area");
+const emailEl=document.getElementById("email");
+const zipEl=document.getElementById("zip");
+
+setLang("en");
 render();
-
 </script>
 
 </body>
