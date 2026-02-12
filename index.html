@@ -9,24 +9,22 @@
     :root{
       --page-bg: #fdf5e3;
 
-      /* Image’s native size (given) */
-      --imgW: 1280;
-      --imgH: 2743;
+      /* Poster width (matches your 1280 design) */
+      --maxW: 1280px;
 
-      /* Where your text/petition starts on the image (given) */
-      --startY: 1450; /* px from top */
-      --bottomPad: 20; /* px from bottom */
-
-      /* Ink color to match the doc */
+      /* Ink */
       --ink: #4a3a2d;
       --ink2: rgba(74,58,45,.82);
 
-      --maxW: 980px;
-      --radius: 14px;
+      /* Layout */
+      --bodyPadX: clamp(22px, 4vw, 84px);
+      --bodyPadTop: 48px;
+      --bodyPadBottom: 40px;
 
+      /* Form */
+      --radius: 14px;
       --fieldBg: rgba(255,255,255,.55);
       --fieldStroke: rgba(74,58,45,.18);
-
       --btnBg: rgba(74,58,45,.94);
       --btnText: #f7f1e8;
     }
@@ -40,63 +38,58 @@
       font-family: Georgia, "Times New Roman", Times, serif;
     }
 
-    /* Center the whole “poster” on the page */
+    /* Center the whole stack */
     .page{
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      padding: 20px 14px 60px;
+      padding: 18px 12px 50px;
     }
 
-    /* This box controls the width (image scales inside) */
     .poster{
       width: min(var(--maxW), 100%);
     }
 
-    /* Holds the image and the overlay content */
-    .img-wrap{
-      position: relative;
+    /* === 3 VERTICAL SECTIONS === */
+    .section{
       width: 100%;
+      background-position: top center;
+      background-repeat: no-repeat;
+      background-size: 100% auto; /* scale with container width */
     }
 
-    /* Image scrolls with the page (normal flow) */
-    .img-wrap img{
-      width: 100%;
-      height: auto;
-      display: block;
+    .header{
+      aspect-ratio: 1280 / 697;
+      background-image: url("head.png");
     }
 
-    /*
-      Overlay content that sits ON TOP OF THE IMAGE.
-      It starts at 1450px from the top of the image, scaled responsively:
-        top = (startY / imgH) * 100%
-      Its bottom = 20px from bottom, scaled responsively:
-        bottom = (bottomPad / imgH) * 100%
-    */
-    .overlay{
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      width: min(78%, 720px); /* tweakable: keeps it inside parchment margins */
-      top: calc((var(--startY) / var(--imgH)) * 100%);
-      bottom: calc((var(--bottomPad) / var(--imgH)) * 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      gap: 14px;
-      pointer-events: auto; /* allow form interaction */
+    .body{
+      /* repeat the body background vertically */
+      background-image: url("bod.png");
+      background-repeat: repeat-y;
+      background-position: top center;
+      background-size: 100% auto;
+
+      /* content padding inside the parchment body */
+      padding: var(--bodyPadTop) var(--bodyPadX) var(--bodyPadBottom);
     }
 
-    .overlay p{
-      margin: 0;
+    .footer{
+      aspect-ratio: 1280 / 279;
+      background-image: url("footer.png");
+    }
+
+    /* Content styling */
+    .body p{
+      margin: 0 0 14px 0;
       line-height: 1.62;
-      font-size: 18px;
+      font-size: clamp(16px, 1.35vw, 19px);
       color: var(--ink2);
       text-shadow: 0 1px 0 rgba(255,255,255,.35);
     }
 
     .section-title{
-      margin-top: 10px;
+      margin: 22px 0 10px;
       font-weight: 700;
       letter-spacing: .03em;
       text-transform: uppercase;
@@ -104,9 +97,8 @@
       color: rgba(74,58,45,.78);
     }
 
-    /* Soft “ink-on-paper” form styling */
     .sign-area{
-      margin-top: 6px;
+      margin-top: 10px;
       padding: 14px;
       border-radius: var(--radius);
       background: rgba(255,255,255,.18);
@@ -201,75 +193,78 @@
       font-size: 13px;
     }
 
-    /* Mobile adjustments */
+    /* Mobile */
     @media (max-width: 720px){
-      .overlay{
-        width: 84%;
-      }
-      .overlay p{
-        font-size: 16px;
-      }
-      form{
-        grid-template-columns: 1fr;
-      }
-      .sig{
-        flex-direction: column;
-        align-items: flex-start;
-      }
+      form{ grid-template-columns: 1fr; }
+      .sig{ flex-direction: column; align-items: flex-start; }
       .sig .meta{ white-space: normal; }
+      .body{ padding: 34px 18px 34px; }
     }
   </style>
 </head>
 
 <body>
   <div class="page">
-    <div class="poster">
-      <div class="img-wrap">
-        <!-- Your 1280x2743 image -->
-        <img src="declaration-bg.png" alt="Declaration of 617 Day" />
+    <div class="poster" aria-label="Declaration layout">
+      <!-- HEADER -->
+      <section class="section header" aria-hidden="true"></section>
 
-        <!-- Overlay content appears ON the image at 1450px down -->
-        <div class="overlay" aria-label="Continuation text and petition">
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt, metus et iaculis dignissim, lorem lorem luctus massa, vel mattis massa lorem id est. Integer laoreet, arcu non cursus ultrices, urna neque commodo nibh, a luctus libero massa non ipsum.</p>
-          <div class="section-title">Sign the Declaration</div>
+      <!-- BODY (repeat-y background) -->
+      <section class="section body" aria-label="Declaration text and petition">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt, metus et iaculis dignissim, lorem lorem luctus massa, vel mattis massa lorem id est. Integer laoreet, arcu non cursus ultrices, urna neque commodo nibh, a luctus libero massa non ipsum.</p>
+        <p>Praesent feugiat, metus non posuere porttitor, orci lectus aliquet eros, a condimentum arcu arcu id nulla. Duis nec sapien ac ante sagittis feugiat. Sed ullamcorper, sem sit amet mollis porttitor, purus neque sodales justo, sed dignissim metus magna quis est.</p>
+        <p>Donec at lectus sed massa placerat porttitor. Curabitur elementum, velit sed ullamcorper tincidunt, est nisi egestas leo, sed eleifend lorem eros at lectus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.</p>
 
-          <section class="sign-area">
-            <form id="signForm" autocomplete="on">
-              <div class="field">
-                <label for="firstName">First name</label>
-                <input id="firstName" name="firstName" required maxlength="40" />
-              </div>
+        <div class="section-title">Sign the Declaration</div>
 
-              <div class="field">
-                <label for="lastName">Last name</label>
-                <input id="lastName" name="lastName" required maxlength="60" />
-              </div>
-
-              <div class="field full">
-                <label for="area">Part of the city you’re from (e.g., Dorchester)</label>
-                <input id="area" name="area" required maxlength="80" />
-              </div>
-
-              <div class="field">
-                <label for="email">Email</label>
-                <input id="email" name="email" type="email" required />
-              </div>
-
-              <div class="field">
-                <label for="zip">Zip code</label>
-                <input id="zip" name="zip" inputmode="numeric" autocomplete="postal-code pattern="\d{5}" minlength="5" maxlength="5" required />
-              </div>
-
-              <button class="btn" type="submit">Sign</button>
-            </form>
-
-            <div class="signatures" aria-label="Signatures list">
-              <div class="section-title" style="margin-top:0">Signatures</div>
-              <div id="sigList"></div>
+        <div class="sign-area">
+          <form id="signForm" autocomplete="on">
+            <div class="field">
+              <label for="firstName">First name</label>
+              <input id="firstName" name="firstName" required maxlength="40" />
             </div>
-          </section>
+
+            <div class="field">
+              <label for="lastName">Last name</label>
+              <input id="lastName" name="lastName" required maxlength="60" />
+            </div>
+
+            <div class="field full">
+              <label for="area">Part of the city you’re from (e.g., Dorchester)</label>
+              <input id="area" name="area" required maxlength="80" />
+            </div>
+
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" required />
+            </div>
+
+            <div class="field">
+              <label for="zip">Zip code</label>
+              <input
+                id="zip"
+                name="zip"
+                inputmode="numeric"
+                autocomplete="postal-code"
+                pattern="\d{5}"
+                minlength="5"
+                maxlength="5"
+                required
+              />
+            </div>
+
+            <button class="btn" type="submit">Sign</button>
+          </form>
+
+          <div class="signatures">
+            <div class="section-title" style="margin-top:0">Signatures</div>
+            <div id="sigList"></div>
+          </div>
         </div>
-      </div>
+      </section>
+
+      <!-- FOOTER -->
+      <section class="section footer" aria-hidden="true"></section>
     </div>
   </div>
 
@@ -344,12 +339,10 @@
         return;
       }
 
-
       const sigs = loadSigs();
       sigs.push({ firstName, lastName, area, email, zip, signedAt: new Date().toISOString() });
       saveSigs(sigs);
 
-      // Refresh to show the signature like you asked
       location.reload();
     });
 
