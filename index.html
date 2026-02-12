@@ -260,7 +260,7 @@
 
               <div class="field">
                 <label for="zip">Zip code</label>
-                <input id="zip" name="zip" inputmode="numeric" pattern="\\d{5}" title="Enter a 5-digit zip code" required maxlength="5" />
+                <input id="zip" name="zip" inputmode="numeric" autocomplete="postal-code pattern="\d{5}" minlength="5" maxlength="5" required />
               </div>
 
               <button class="btn" type="submit">Sign</button>
@@ -346,6 +346,7 @@
         alert("Please enter a valid 5-digit zip code.");
         return;
       }
+
 
       const sigs = loadSigs();
       sigs.push({ firstName, lastName, area, email, zip, signedAt: new Date().toISOString() });
