@@ -65,7 +65,10 @@ body{
   background-image:url("bod.png");
   background-repeat:repeat-y;
   background-position:top center;
-  background-size:100% auto;
+
+  /* Force repeat every 361px vertically */
+  background-size:100% 361px;
+
   padding:var(--bodyPadTop) var(--bodyPadX) var(--bodyPadBottom);
 }
 
