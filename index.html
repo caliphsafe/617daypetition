@@ -225,6 +225,11 @@ input{
 /* ensure NO backgrounds in body area */
 .sig, .signatures, #sigList, .copy, .copy *{ background:transparent !important; }
 
+/* Load more button styling matches */
+.loadmore{
+  margin-top:10px;
+}
+
 @media(max-width:720px){
   form{ grid-template-columns:1fr; }
   .sig{ flex-direction:column; }
@@ -333,10 +338,12 @@ input{
           <button class="btn" id="btnSign">Sign</button>
 
         </form>
-<br /><br />
+
         <div class="signatures">
           <div class="section-title" style="margin-top:0" id="sigTitle">Signatures</div>
+          <div class="small" id="sigCount"></div>
           <div id="sigList"></div>
+          <button class="btn loadmore" id="loadMore" type="button" style="display:none;">Load more signatures</button>
         </div>
 
       </div>
@@ -353,7 +360,9 @@ input{
 </div>
 
 <script>
-const STORAGE_KEY="decl617_signatures_v1";
+/** ✅ PASTE YOUR APPS SCRIPT WEB APP URL HERE (ends with /exec) */
+const API_URL = "https://script.google.com/macros/s/AKfycbz6wAVE_clmZvn0HQocrMaRCn7bQd9kPWcJ5tp5ggEaiD1LErQlQPuAq-YXN5afTfmzwQ/exec";
+
 const langBtns=[...document.querySelectorAll(".langbtn")];
 
 const UI={
@@ -363,7 +372,9 @@ const UI={
     sigTitle:"Signatures",
     labels:{first:"First name", last:"Last name", area:"Neighborhood (Back Bay, Dorchester, Roxbury)", email:"Email", zip:"Zip"},
     btn:"Sign",
-    footer:"Want to help bring #617Day to life? Partner, volunteer, or host an activation: 617DayBoston@gmail.com • @617DayBoston"
+    footer:"Want to help bring #617Day to life? Partner, volunteer, or host an activation: 617DayBoston@gmail.com • @617DayBoston",
+    loadMore:"Load more signatures",
+    countSuffix:"people have signed."
   },
   es:{
     signTitle:"Firma la Declaración",
@@ -371,7 +382,9 @@ const UI={
     sigTitle:"Firmas",
     labels:{first:"Nombre", last:"Apellido", area:"Vecindario (Back Bay, Dorchester, Roxbury)", email:"Correo", zip:"Código postal"},
     btn:"Firmar",
-    footer:"¿Quieres apoyar #617Day? Sé socio, voluntario o anfitrión de una activación: 617DayBoston@gmail.com • @617DayBoston"
+    footer:"¿Quieres apoyar #617Day? Sé socio, voluntario o anfitrión de una activación: 617DayBoston@gmail.com • @617DayBoston",
+    loadMore:"Cargar más firmas",
+    countSuffix:"personas han firmado."
   },
   ht:{
     signTitle:"Siyen Deklarasyon an",
@@ -379,11 +392,15 @@ const UI={
     sigTitle:"Siyati yo",
     labels:{first:"Prenon", last:"Siyati", area:"Katye (Back Bay, Dorchester, Roxbury)", email:"Imèl", zip:"Kòd postal"},
     btn:"Siyen",
-    footer:"Ou vle ede fè #617Day rive? Vin patnè, volontè, oswa òganize yon aktivasyon: 617DayBoston@gmail.com • @617DayBoston"
+    footer:"Ou vle ede fè #617Day rive? Vin patnè, volontè, oswa òganize yon aktivasyon: 617DayBoston@gmail.com • @617DayBoston",
+    loadMore:"Chaje plis siyati",
+    countSuffix:"moun ki siyen."
   }
 };
 
 let currentLang="en";
+let offset = 0;
+const PAGE_SIZE = 50;
 
 function setLang(lang){
   currentLang=lang;
@@ -405,14 +422,21 @@ function setLang(lang){
 
   document.getElementById("btnSign").textContent=UI[lang].btn;
   document.getElementById("footerCallout").textContent=UI[lang].footer;
+
+  const loadMoreBtn = document.getElementById("loadMore");
+  loadMoreBtn.textContent = UI[lang].loadMore;
+
+  // keep count text but adjust suffix language
+  const countEl = document.getElementById("sigCount");
+  const current = countEl.dataset.total ? Number(countEl.dataset.total) : null;
+  if(current !== null && !Number.isNaN(current)){
+    countEl.textContent = `${current.toLocaleString()} ${UI[lang].countSuffix}`;
+  }
 }
 
 langBtns.forEach(btn=>{
   btn.addEventListener("click", ()=> setLang(btn.dataset.lang));
 });
-
-function loadSigs(){ return JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]"); }
-function saveSigs(s){ localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }
 
 function escapeHtml(str){
   return String(str)
@@ -425,33 +449,114 @@ function escapeHtml(str){
 
 function cap(s){
   if(!s) return "";
+  s = String(s).trim();
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-function render(){
-  const list=document.getElementById("sigList");
-  const sigs=loadSigs().slice(-12).reverse();
-  if(!sigs.length){
-    list.innerHTML=`<div class="empty">Be the first to sign.</div>`;
-    return;
-  }
-  list.innerHTML=sigs.map(s=>{
-    const first=cap((s.firstName||"").trim());
-    const last=(s.lastName||"").trim();
-    const li=last ? (last[0].toUpperCase()+".") : "";
-    const area=(s.area||"").trim();
-    const zip=(s.zip||"").trim();
-    return `<div class="sig"><div class="who">${escapeHtml((first+" "+li).trim())}</div><div class="meta">${escapeHtml(area+" • "+zip)}</div></div>`;
-  }).join("");
+async function fetchPage(limit, offset){
+  const url = API_URL + `?limit=${encodeURIComponent(limit)}&offset=${encodeURIComponent(offset)}`;
+  const res = await fetch(url, { method:"GET" });
+  const data = await res.json();
+  if(!data.ok) throw new Error(data.error || "Failed to load signatures.");
+  return data;
 }
 
+function setCount(total){
+  const el = document.getElementById("sigCount");
+  el.dataset.total = total;
+  el.textContent = `${Number(total).toLocaleString()} ${UI[currentLang].countSuffix}`;
+}
+
+function appendSignatures(signatures){
+  const list = document.getElementById("sigList");
+  if(!signatures.length && !list.children.length){
+    list.innerHTML = `<div class="empty">Be the first to sign.</div>`;
+    return;
+  }
+
+  const html = signatures.map(s=>{
+    const first = cap(s.firstName || "");
+    const last  = String(s.lastName || "").trim();
+    const li    = last ? (last[0].toUpperCase() + ".") : "";
+    const area  = String(s.area || "").trim();
+    const zip   = String(s.zip || "").trim();
+
+    return `<div class="sig">
+      <div class="who">${escapeHtml((first+" "+li).trim())}</div>
+      <div class="meta">${escapeHtml(area+" • "+zip)}</div>
+    </div>`;
+  }).join("");
+
+  list.insertAdjacentHTML("beforeend", html);
+}
+
+async function loadPage(reset=false){
+  const list = document.getElementById("sigList");
+  const btn  = document.getElementById("loadMore");
+
+  if(reset){
+    offset = 0;
+    list.innerHTML = "";
+    btn.style.display = "none";
+  }
+
+  // optimistic UI state
+  btn.disabled = true;
+
+  const data = await fetchPage(PAGE_SIZE, offset);
+  setCount(data.total || 0);
+
+  appendSignatures(data.signatures || []);
+
+  offset += (data.signatures || []).length;
+
+  // show/hide load more
+  if(offset < (data.total || 0)){
+    btn.style.display = "block";
+    btn.disabled = false;
+  }else{
+    btn.style.display = "none";
+  }
+}
+
+async function submitSignature(payload){
+  const res = await fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type":"application/json" },
+    body: JSON.stringify(payload)
+  });
+  const data = await res.json();
+  if(!data.ok) throw new Error(data.error || "Failed to submit signature.");
+  return data;
+}
+
+/** Form elements */
 const firstNameEl=document.getElementById("firstName");
 const lastNameEl=document.getElementById("lastName");
 const areaEl=document.getElementById("area");
 const emailEl=document.getElementById("email");
 const zipEl=document.getElementById("zip");
+const btnEl=document.getElementById("btnSign");
+const formEl=document.getElementById("signForm");
 
-document.getElementById("signForm").addEventListener("submit", e=>{
+document.getElementById("loadMore").addEventListener("click", ()=>{
+  loadPage(false).catch(err=>{
+    console.error(err);
+    alert("Unable to load more signatures right now.");
+  });
+});
+
+/** Initial load */
+function init(){
+  setLang("en");
+  loadPage(true).catch(err=>{
+    console.error(err);
+    document.getElementById("sigList").innerHTML =
+      `<div class="empty">Unable to load signatures right now.</div>`;
+  });
+}
+
+formEl.addEventListener("submit", async (e)=>{
   e.preventDefault();
 
   const firstName=firstNameEl.value.trim();
@@ -465,14 +570,42 @@ document.getElementById("signForm").addEventListener("submit", e=>{
     return;
   }
 
-  const sigs=loadSigs();
-  sigs.push({ firstName, lastName, area, email, zip, signedAt:new Date().toISOString() });
-  saveSigs(sigs);
-  location.reload();
+  btnEl.disabled = true;
+  const oldBtnText = btnEl.textContent;
+  btnEl.textContent = (currentLang === "es") ? "Enviando..." : (currentLang === "ht") ? "Ap voye..." : "Submitting...";
+
+  try{
+    await submitSignature({
+      firstName,
+      lastName,
+      area,
+      email,
+      zip,
+      lang: currentLang,
+      userAgent: navigator.userAgent,
+      pageUrl: location.href
+    });
+
+    // Clear fields
+    firstNameEl.value = "";
+    lastNameEl.value = "";
+    areaEl.value = "";
+    emailEl.value = "";
+    zipEl.value = "";
+
+    // Reload from newest so the new signer appears immediately + count updates
+    await loadPage(true);
+
+  }catch(err){
+    console.error(err);
+    alert("Sorry — we couldn’t submit your signature. Please try again.");
+  }finally{
+    btnEl.disabled = false;
+    btnEl.textContent = oldBtnText;
+  }
 });
 
-setLang("en");
-render();
+init();
 </script>
 
 </body>
