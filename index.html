@@ -386,6 +386,30 @@ input{
 /** ✅ Paste your Apps Script Web App URL (ends with /exec) */
 const API_URL = "https://script.google.com/macros/s/AKfycbz6wAVE_clmZvn0HQocrMaRCn7bQd9kPWcJ5tp5ggEaiD1LErQlQPuAq-YXN5afTfmzwQ/exec";
 
+/** 🔁 Body background tile height (must match your CSS background-size Y) */
+const TILE_H = 361;
+function snapBodyToTile(){
+  const bodySection = document.querySelector(".section.body");
+  if(!bodySection) return;
+
+  // allow natural sizing first
+  bodySection.style.minHeight = "0px";
+
+  // measure needed height (includes padding + content)
+  const needed = bodySection.scrollHeight;
+
+  // round up to nearest multiple of TILE_H
+  const snapped = Math.ceil(needed / TILE_H) * TILE_H;
+
+  bodySection.style.minHeight = snapped + "px";
+}
+
+// debounce resize snapping
+window.addEventListener("resize", () => {
+  clearTimeout(window.__snapTO);
+  window.__snapTO = setTimeout(snapBodyToTile, 80);
+});
+
 const langBtns=[...document.querySelectorAll(".langbtn")];
 
 const UI={
@@ -455,6 +479,9 @@ function setLang(lang){
   if(total !== null && !Number.isNaN(total)){
     countEl.textContent = `${total.toLocaleString()} ${UI[lang].countSuffix}`;
   }
+
+  // 🧩 content height changed
+  snapBodyToTile();
 }
 
 langBtns.forEach(btn=>{
@@ -495,6 +522,7 @@ function appendSignatures(signatures){
 
   if(!signatures.length && !list.children.length){
     list.innerHTML = `<div class="empty">Be the first to sign.</div>`;
+    snapBodyToTile();
     return;
   }
 
@@ -512,6 +540,9 @@ function appendSignatures(signatures){
   }).join("");
 
   list.insertAdjacentHTML("beforeend", html);
+
+  // 🧩 content height changed
+  snapBodyToTile();
 }
 
 async function loadPage(reset=false){
@@ -540,6 +571,9 @@ async function loadPage(reset=false){
   }else{
     btn.style.display = "none";
   }
+
+  // 🧩 after load, ensure snap is correct
+  snapBodyToTile();
 }
 
 /**
@@ -622,16 +656,20 @@ formEl.addEventListener("submit", async (e)=>{
   }finally{
     btnEl.disabled = false;
     btnEl.textContent = oldBtnText;
+    snapBodyToTile();
   }
 });
 
 /** Init */
 setLang("en");
-loadPage(true).catch(err=>{
-  console.error(err);
-  document.getElementById("sigList").innerHTML =
-    `<div class="empty">Unable to load signatures right now.</div>`;
-});
+loadPage(true)
+  .then(()=> snapBodyToTile())
+  .catch(err=>{
+    console.error(err);
+    document.getElementById("sigList").innerHTML =
+      `<div class="empty">Unable to load signatures right now.</div>`;
+    snapBodyToTile();
+  });
 </script>
 
 </body>
