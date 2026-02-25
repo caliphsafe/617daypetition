@@ -8,7 +8,7 @@
 <style>
 
 :root{
-  --page-bg:#fdf5e3;
+  --page-bg:#fdf5e3; 
   --maxW:1280px;
 
   --ink:#4a3a2d;
@@ -72,7 +72,7 @@ body{
   padding:var(--bodyPadTop) var(--bodyPadX) var(--bodyPadBottom);
 }
 @media (max-width:720px){
-  .body{ background-size:100% 160px; } /* match TILE_MOBILE */
+  .body{ background-size:100% 60px; } /* match TILE_MOBILE */
 }
 .footer{
   aspect-ratio:1280/279;
@@ -390,7 +390,7 @@ const API_URL = "https://script.google.com/macros/s/AKfycbz6wAVE_clmZvn0HQocrMaR
 
 /** 🔁 Body background tile height (must match your CSS background-size Y) */
 const TILE_DESKTOP = 361;
-const TILE_MOBILE  = 160; // tweak 240–280 if needed
+const TILE_MOBILE  = 60; // tweak 240–280 if needed
 
 function snapBodyToTile(){
   const bodySection = document.querySelector(".section.body");
