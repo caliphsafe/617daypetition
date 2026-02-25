@@ -71,7 +71,9 @@ body{
 
   padding:var(--bodyPadTop) var(--bodyPadX) var(--bodyPadBottom);
 }
-
+@media (max-width:720px){
+  .body{ background-size:100% 260px; } /* match TILE_MOBILE */
+}
 .footer{
   aspect-ratio:1280/279;
   background-image:url("footer.png");
