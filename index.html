@@ -389,10 +389,15 @@ input{
 const API_URL = "https://script.google.com/macros/s/AKfycbz6wAVE_clmZvn0HQocrMaRCn7bQd9kPWcJ5tp5ggEaiD1LErQlQPuAq-YXN5afTfmzwQ/exec";
 
 /** 🔁 Body background tile height (must match your CSS background-size Y) */
-const TILE_H = 361;
+const TILE_DESKTOP = 361;
+const TILE_MOBILE  = 260; // tweak 240–280 if needed
+
 function snapBodyToTile(){
   const bodySection = document.querySelector(".section.body");
   if(!bodySection) return;
+
+  // pick tile size based on viewport
+  const tile = (window.innerWidth <= 720) ? TILE_MOBILE : TILE_DESKTOP;
 
   // allow natural sizing first
   bodySection.style.minHeight = "0px";
@@ -400,8 +405,8 @@ function snapBodyToTile(){
   // measure needed height (includes padding + content)
   const needed = bodySection.scrollHeight;
 
-  // round up to nearest multiple of TILE_H
-  const snapped = Math.ceil(needed / TILE_H) * TILE_H;
+  // round up to nearest multiple of the current tile size
+  const snapped = Math.ceil(needed / tile) * tile;
 
   bodySection.style.minHeight = snapped + "px";
 }
@@ -411,7 +416,6 @@ window.addEventListener("resize", () => {
   clearTimeout(window.__snapTO);
   window.__snapTO = setTimeout(snapBodyToTile, 80);
 });
-
 const langBtns=[...document.querySelectorAll(".langbtn")];
 
 const UI={
