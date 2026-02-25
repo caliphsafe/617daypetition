@@ -232,7 +232,27 @@ input{
 
 @media(max-width:720px){
   form{ grid-template-columns:1fr; }
-  .sig{ flex-direction:column; }
+
+  /* Keep sig info on ONE line on mobile */
+  .sig{
+    flex-direction:row;
+    align-items:baseline;
+    gap:10px;
+  }
+
+  .sig .who{
+    flex:0 0 auto;
+    font-size:16px; /* optional: slightly smaller */
+  }
+
+  .sig .meta{
+    flex:1 1 auto;
+    font-size:12px;           /* optional: smaller on mobile */
+    white-space:nowrap;       /* prevents wrap to line 2 */
+    overflow:hidden;          /* for long neighborhoods */
+    text-overflow:ellipsis;   /* shows ... if too long */
+    text-align:right;         /* keeps it tidy on the right */
+  }
 }
 
 </style>
