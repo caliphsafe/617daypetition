@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Declaration of 617 Day — Petition</title>
+
+<style>
+@font-face {
+  font-family: "OldEnglishFive";
+  src: url("OldEnglishFive.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+:root{
+  --page-bg:#fdf5e3; 
+  --maxW:1280px;
+
+  --ink:#4a3a2d;
+  --ink2:rgba(74,58,45,.82);
+
+  /* MORE SIDE MARGIN */
+  --bodyPadX:clamp(72px, 11vw, 260px);
+  --bodyPadTop:48px;
+  --bodyPadBottom:40px;
+
+  --fieldBg:rgba(253,245,227,.55);
+  --fieldStroke:rgba(74,58,45,.18);
+  --btnBg:rgba(74,58,45,.92);
+  --btnText:#f7f1e8;
+}
+
+*{ box-sizing:border-box; }
+
+html,body{ height:100%; }
+
+body{
+  margin:0;
+  background:var(--page-bg);
+  color:var(--ink);
+  font-family:"OldEnglishFive", "Courier New", Courier, monospace;
+  font-weight:normal;
+}
+
+
+/* Center stack */
+.page{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  padding:18px 12px 50px;
+}
+
+.poster{ width:min(var(--maxW),100%); }
+
+/* Sections */
+.section{
+  width:100%;
+  background-position:top center;
+  background-repeat:no-repeat;
+  background-size:100% auto;
+}
+
+.header{
+  aspect-ratio:1280/697;
+  background-image:url("head1.png");
+}
+
+.body{
+  background-image:url("bod.png");
+  background-repeat:repeat-y;
+  background-position:top center;
+
+  /* Force repeat every 361px vertically */
+  background-size:100% 361px;
+
+  padding:var(--bodyPadTop) var(--bodyPadX) var(--bodyPadBottom);
+}
+@media (max-width:720px){
+  .body{ background-size:100% 60px; } /* match TILE_MOBILE */
+}
+.footer{
+  aspect-ratio:1280/279;
+  background-image:url("footer.png");
+  position:relative;
+}
+
+.footer-callout{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  top:10px;
+  width:min(92%, 900px);
+  text-align:center;
+  font-size:12px; /* mobile default */
+  color:rgba(74,58,45,.84);
+}
+@media (min-width:721px){
+  .footer-callout{
+    font-size:17px;
+  }
+}
+
+
+/* Text */
+.body p{
+  margin:0 0 16px;
+  line-height:1.65;
+  font-size:clamp(16px,1.35vw,19px);
+  color:var(--ink2);
+  text-align:justify;
+  text-align-last:center;
+}
+
+.section-title{
+  margin:28px 0 12px;
+  font-weight:700;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  font-size:13px;
+}
+
+.small{
+  font-size:13px;
+  margin-top:-6px;
+  color:rgba(74,58,45,.78);
+  text-align:center;
+}
+
+/* Language toggle */
+.langbar{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  margin:0 0 12px;
+}
+
+.langbtns{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.langbtn{
+  border:0;
+  background:var(--btnBg);
+  color:var(--btnText);
+  padding:8px 12px;
+  border-radius:999px;
+  cursor:pointer;
+  font-family:"Courier New", Courier, monospace;
+  font-weight:700;
+  font-size:12px;
+  letter-spacing:.02em;
+}
+
+
+.langbtn[aria-pressed="true"]{
+  filter:brightness(1.05);
+}
+
+/* Condensed mobile (keep the mobile version shorter) */
+.longcopy{ display:block; }
+.shortcopy{ display:none; }
+
+@media (max-width:720px){
+  :root{ --bodyPadX:28px; }
+  .longcopy{ display:none; }
+  .shortcopy{ display:block; }
+}
+
+/* FLAT FORM */
+.sign-area{
+  margin-top:10px;
+  padding:0;
+  background:transparent;
+}
+
+form{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+label{ font-size:12px; }
+
+input{
+  padding:11px 12px;
+  border-radius:12px;
+  border:1px solid var(--fieldStroke);
+  background:var(--fieldBg);
+  font-family:"Courier New", Courier, monospace;
+}
+
+.full{ grid-column:1/-1; }
+
+.btn{
+  grid-column:1/-1;
+  padding:12px;
+  border-radius:12px;
+  border:0;
+  background:var(--btnBg);
+  color:var(--btnText);
+  font-family:"Courier New", Courier, monospace;
+  font-weight:700;
+  cursor:pointer;
+}
+
+
+/* SIGNATURES — COMPLETELY FLAT */
+.signatures{
+  margin-top:18px;
+  border-top:1px dashed rgba(74,58,45,.25);
+  padding-top:12px;
+}
+
+.sig{
+  display:flex;
+  justify-content:space-between;
+  padding:6px 0;
+  background:none;
+}
+
+.sig .who{ font-weight:700; }
+.sig .meta{ font-size:13px; }
+.empty{ padding:6px 0; color:rgba(74,58,45,.85); }
+
+/* ensure NO backgrounds in body area */
+.sig, .signatures, #sigList, .copy, .copy *{ background:transparent !important; }
+
+/* Load more button styling matches */
+.loadmore{
+  margin-top:10px;
+}
+
+@media(max-width:720px){
+  form{ grid-template-columns:1fr; }
+
+  /* Keep sig info on ONE line on mobile */
+  .sig{
+    flex-direction:row;
+    align-items:baseline;
+    gap:10px;
+  }
+
+  .sig .who{
+    flex:0 0 auto;
+    font-size:16px; /* optional: slightly smaller */
+  }
+
+  .sig .meta{
+    flex:1 1 auto;
+    font-size:12px;           /* optional: smaller on mobile */
+    white-space:nowrap;       /* prevents wrap to line 2 */
+    overflow:hidden;          /* for long neighborhoods */
+    text-overflow:ellipsis;   /* shows ... if too long */
+    text-align:right;         /* keeps it tidy on the right */
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="page">
+  <div class="poster">
+
+    <section class="section header"></section>
+
+    <section class="section body">
+
+      <!-- language toggle (names in English) -->
+      <div class="langbar">
+        <div class="langbtns" role="tablist" aria-label="Language">
+          <button class="langbtn" type="button" data-lang="en" aria-pressed="true">English</button>
+          <button class="langbtn" type="button" data-lang="es" aria-pressed="false">Spanish</button>
+          <button class="langbtn" type="button" data-lang="ht" aria-pressed="false">Haitian Creole</button>
+        </div>
+      </div><br />
+
+      <!-- FULL COPY ALWAYS VISIBLE (with condensed mobile version) -->
+
+      <!-- ENGLISH -->
+      <div class="copy copy-en">
+        <div class="shortcopy">
+          <p>We call upon the City of Boston and the Commonwealth of Massachusetts to formally declare the 17th day of June as <strong>#617Day</strong>, a yearly observance honoring our neighborhoods, our culture, and the small businesses that sustain the spirit of our city.</p> <br />
+          <p>On this day, participating cultural institutions may offer admission at $6.17, while local restaurants and retail shops present special promotions in celebration, uniting the people and strengthening our local trade.</p> <br />
+          <p>Add your name in support, and let it be known that the people stand for <strong>#617Day</strong> as an enduring Boston tradition.</p> <br />
+        </div>
+
+        <div class="longcopy">
+          <p>We call upon the City of Boston and the Commonwealth of Massachusetts to formally declare the 17th day of June as <strong>#617Day</strong>, a yearly observance honoring our neighborhoods, our culture, and the small businesses that sustain the spirit of our city.</p> <br />
+          <p>On this day, participating cultural institutions may offer admission at $6.17, while local restaurants and retail shops present special promotions in celebration, uniting the people and strengthening our local trade.</p> <br />
+          <p>Add your name in support, and let it be known that the people stand for <strong>#617Day</strong> as an enduring Boston tradition.</p> <br />
+        </div>
+      </div>
+
+      <!-- SPANISH -->
+      <div class="copy copy-es" style="display:none;">
+        <div class="shortcopy">
+          <p>Hacemos un llamado a la Ciudad de Boston y a la Mancomunidad de Massachusetts para que declaren formalmente el día 17 de junio como <strong>#617Day</strong>, una conmemoración anual que honra nuestros vecindarios, nuestra cultura y los pequeños negocios que sostienen el espíritu de nuestra ciudad.</p> <br />
+          <p>En este día, las instituciones culturales participantes podrán ofrecer entrada a $6.17, mientras que restaurantes y comercios locales presentarán promociones especiales para celebrar, uniendo al pueblo y fortaleciendo nuestro comercio local.</p> <br />
+          <p>Agrega tu nombre en apoyo y que se sepa que el pueblo respalda <strong>#617Day</strong> como una tradición duradera de Boston.</p> <br />
+        </div>
+
+        <div class="longcopy">
+          <p>Hacemos un llamado a la Ciudad de Boston y a la Mancomunidad de Massachusetts para que declaren formalmente el día 17 de junio como <strong>#617Day</strong>, una conmemoración anual que honra nuestros vecindarios, nuestra cultura y los pequeños negocios que sostienen el espíritu de nuestra ciudad.</p> <br />
+          <p>En este día, las instituciones culturales participantes podrán ofrecer entrada a $6.17, mientras que restaurantes y comercios locales presentarán promociones especiales para celebrar, uniendo al pueblo y fortaleciendo nuestro comercio local.</p> <br />
+          <p>Agrega tu nombre en apoyo y que se sepa que el pueblo respalda <strong>#617Day</strong> como una tradición duradera de Boston.</p> <br />
+        </div>
+      </div>
+
+      <!-- HAITIAN CREOLE -->
+      <div class="copy copy-ht" style="display:none;">
+        <div class="shortcopy">
+          <p>N ap mande Vil Boston ak Commonwealth Massachusetts pou deklare ofisyèlman 17 Jen kòm <strong>#617Day</strong>, yon obsèvans chak ane ki onore katye nou yo, kilti nou, ak ti biznis ki soutni lespri vil nou an.</p> <br />
+          <p>Nan jou sa a, enstitisyon kiltirèl ki patisipe yo ka bay antre a $6.17, epi restoran ak boutik lokal yo ka ofri pwomosyon espesyal pou selebrasyon an, pou rasanble moun yo epi ranfòse komès lokal nou an.</p> <br />
+          <p>Ajoute non ou pou sipòte, epi kite yo konnen pèp la kanpe pou <strong>#617Day</strong> kòm yon tradisyon Boston ki la pou dire.</p> <br />
+        </div>
+
+        <div class="longcopy">
+          <p>N ap mande Vil Boston ak Commonwealth Massachusetts pou deklare ofisyèlman 17 Jen kòm <strong>#617Day</strong>, yon obsèvans chak ane ki onore katye nou yo, kilti nou, ak ti biznis ki soutni lespri vil nou an.</p> <br />
+          <p>Nan jou sa a, enstitisyon kiltirèl ki patisipe yo ka bay antre a $6.17, epi restoran ak boutik lokal yo ka ofri pwomosyon espesyal pou selebrasyon an, pou rasanble moun yo epi ranfòse komès lokal nou an.</p> <br />
+          <p>Ajoute non ou pou sipòte, epi kite yo konnen pèp la kanpe pou <strong>#617Day</strong> kòm yon tradisyon Boston ki la pou dire.</p> <br />
+        </div>
+      </div>
+
+      <div class="section-title" id="signTitle">Sign the Declaration</div>
+      <div class="small" id="microCta">Add your name below.</div>
+
+      <div class="sign-area">
+
+        <form id="signForm">
+
+          <div class="field">
+            <label id="lblFirst">First name</label>
+            <input id="firstName" required>
+          </div>
+
+          <div class="field">
+            <label id="lblLast">Last name</label>
+            <input id="lastName">
+          </div>
+
+          <div class="field full">
+            <label id="lblArea">Part of the city</label>
+            <input id="area" required>
+          </div>
+
+          <div class="field">
+            <label id="lblEmail">Email</label>
+            <input id="email" type="email" required>
+          </div>
+
+          <div class="field">
+            <label id="lblZip">Zip</label>
+            <input id="zip" inputmode="numeric" pattern="\d{5}" minlength="5" maxlength="5" required>
+          </div>
+
+          <button class="btn" id="btnSign">Sign</button>
+
+        </form>
+
+        <div class="signatures">
+  <div class="section-title" style="margin-top:0" id="sigTitle">Signatures</div>
+  <div class="small" id="sigCount"></div>
+  <div id="sigList"></div>
+  <button class="btn" id="loadMore" type="button" style="display:none;">Load more signatures</button>
+</div>
+
+      </div>
+
+    </section>
+
+    <section class="section footer">
+      <div class="footer-callout" id="footerCallout">
+        Want to help bring #617Day to life? Partner, volunteer, or host an activation: 617DayBoston@gmail.com • @617DayBoston
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+/** ✅ Paste your Apps Script Web App URL (ends with /exec) */
+const API_URL = "https://script.google.com/macros/s/AKfycbz6wAVE_clmZvn0HQocrMaRCn7bQd9kPWcJ5tp5ggEaiD1LErQlQPuAq-YXN5afTfmzwQ/exec";
+
+/** 🔁 Body background tile height (must match your CSS background-size Y) */
+const TILE_DESKTOP = 361;
+const TILE_MOBILE  = 60; // tweak 240–280 if needed
+
+function snapBodyToTile(){
+  const bodySection = document.querySelector(".section.body");
+  if(!bodySection) return;
+
+  // pick tile size based on viewport
+  const tile = (window.innerWidth <= 720) ? TILE_MOBILE : TILE_DESKTOP;
+
+  // allow natural sizing first
+  bodySection.style.minHeight = "0px";
+
+  // measure needed height (includes padding + content)
+  const needed = bodySection.scrollHeight;
+
+  // round up to nearest multiple of the current tile size
+  const snapped = Math.ceil(needed / tile) * tile;
+
+  bodySection.style.minHeight = snapped + "px";
+}
+
+// debounce resize snapping
+window.addEventListener("resize", () => {
+  clearTimeout(window.__snapTO);
+  window.__snapTO = setTimeout(snapBodyToTile, 80);
+});
+const langBtns=[...document.querySelectorAll(".langbtn")];
+
+const UI={
+  en:{
+    signTitle:"Sign the Declaration",
+    microCta:"Add your name below.",
+    sigTitle:"Signatures",
+    labels:{first:"First name", last:"Last name", area:"Neighborhood (Back Bay, Dorchester, Roxbury)", email:"Email", zip:"Zip"},
+    btn:"Sign",
+    footer:"Want to help bring #617Day to life? Partner, volunteer, or host an activation: 617DayBoston@gmail.com • @617DayBoston",
+    loadMore:"Load more signatures",
+    countSuffix:"people have signed."
+  },
+  es:{
+    signTitle:"Firma la Declaración",
+    microCta:"Agrega tu nombre abajo.",
+    sigTitle:"Firmas",
+    labels:{first:"Nombre", last:"Apellido", area:"Vecindario (Back Bay, Dorchester, Roxbury)", email:"Correo", zip:"Código postal"},
+    btn:"Firmar",
+    footer:"¿Quieres apoyar #617Day? Sé socio, voluntario o anfitrión de una activación: 617DayBoston@gmail.com • @617DayBoston",
+    loadMore:"Cargar más firmas",
+    countSuffix:"personas han firmado."
+  },
+  ht:{
+    signTitle:"Siyen Deklarasyon an",
+    microCta:"Mete non ou anba a.",
+    sigTitle:"Siyati yo",
+    labels:{first:"Prenon", last:"Siyati", area:"Katye (Back Bay, Dorchester, Roxbury)", email:"Imèl", zip:"Kòd postal"},
+    btn:"Siyen",
+    footer:"Ou vle ede fè #617Day rive? Vin patnè, volontè, oswa òganize yon aktivasyon: 617DayBoston@gmail.com • @617DayBoston",
+    loadMore:"Chaje plis siyati",
+    countSuffix:"moun ki siyen."
+  }
+};
+
+let currentLang="en";
+let offset = 0;
+const PAGE_SIZE = 20;
+
+function setLang(lang){
+  currentLang=lang;
+
+  langBtns.forEach(b=>b.setAttribute("aria-pressed", b.dataset.lang===lang ? "true":"false"));
+
+  document.querySelectorAll(".copy").forEach(el=>el.style.display="none");
+  document.querySelectorAll(".copy-"+lang).forEach(el=>el.style.display="block");
+
+  document.getElementById("signTitle").textContent=UI[lang].signTitle;
+  document.getElementById("microCta").textContent=UI[lang].microCta;
+  document.getElementById("sigTitle").textContent=UI[lang].sigTitle;
+
+  document.getElementById("lblFirst").textContent=UI[lang].labels.first;
+  document.getElementById("lblLast").textContent=UI[lang].labels.last;
+  document.getElementById("lblArea").textContent=UI[lang].labels.area;
+  document.getElementById("lblEmail").textContent=UI[lang].labels.email;
+  document.getElementById("lblZip").textContent=UI[lang].labels.zip;
+
+  document.getElementById("btnSign").textContent=UI[lang].btn;
+  document.getElementById("footerCallout").textContent=UI[lang].footer;
+
+  const loadMoreBtn = document.getElementById("loadMore");
+  loadMoreBtn.textContent = UI[lang].loadMore;
+
+  // re-render count suffix in selected language
+  const countEl = document.getElementById("sigCount");
+  const total = countEl.dataset.total ? Number(countEl.dataset.total) : null;
+  if(total !== null && !Number.isNaN(total)){
+    countEl.textContent = `${total.toLocaleString()} ${UI[lang].countSuffix}`;
+  }
+
+  // 🧩 content height changed
+  snapBodyToTile();
+}
+
+langBtns.forEach(btn=>{
+  btn.addEventListener("click", ()=> setLang(btn.dataset.lang));
+});
+
+function escapeHtml(str){
+  return String(str)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function cap(s){
+  if(!s) return "";
+  s = String(s).trim();
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+async function fetchPage(limit, offset){
+  const url = API_URL + `?limit=${encodeURIComponent(limit)}&offset=${encodeURIComponent(offset)}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  if(!data.ok) throw new Error(data.error || "Failed to load signatures.");
+  return data;
+}
+
+function setCount(total){
+  const el = document.getElementById("sigCount");
+  el.dataset.total = total;
+  el.textContent = `${Number(total).toLocaleString()} ${UI[currentLang].countSuffix}`;
+}
+
+function appendSignatures(signatures){
+  const list = document.getElementById("sigList");
+
+  if(!signatures.length && !list.children.length){
+    list.innerHTML = `<div class="empty">Be the first to sign.</div>`;
+    snapBodyToTile();
+    return;
+  }
+
+  const html = signatures.map(s=>{
+    const first = cap(s.firstName || "");
+    const last  = String(s.lastName || "").trim();
+    const li    = last ? (last[0].toUpperCase() + ".") : "";
+    const area  = String(s.area || "").trim();
+    const zip   = String(s.zip || "").trim();
+
+    return `<div class="sig">
+      <div class="who">${escapeHtml((first+" "+li).trim())}</div>
+      <div class="meta">${escapeHtml(area+" • "+zip)}</div>
+    </div>`;
+  }).join("");
+
+  list.insertAdjacentHTML("beforeend", html);
+
+  // 🧩 content height changed
+  snapBodyToTile();
+}
+
+async function loadPage(reset=false){
+  const list = document.getElementById("sigList");
+  const btn  = document.getElementById("loadMore");
+
+  if(reset){
+    offset = 0;
+    list.innerHTML = "";
+    btn.style.display = "none";
+  }
+
+  btn.disabled = true;
+
+  const data = await fetchPage(PAGE_SIZE, offset);
+
+  setCount(data.total || 0);
+  appendSignatures(data.signatures || []);
+
+  offset += (data.signatures || []).length;
+
+  // show/hide Load More
+  if(offset < (data.total || 0)){
+    btn.style.display = "block";
+    btn.disabled = false;
+  }else{
+    btn.style.display = "none";
+  }
+
+  // 🧩 after load, ensure snap is correct
+  snapBodyToTile();
+}
+
+/**
+ * POST without JSON content-type to avoid Apps Script CORS/preflight headaches.
+ * Use x-www-form-urlencoded.
+ */
+async function submitSignature(payload){
+  const body = new URLSearchParams(payload).toString();
+
+  const res = await fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type":"application/x-www-form-urlencoded;charset=UTF-8" },
+    body
+  });
+
+  const data = await res.json();
+  if(!data.ok) throw new Error(data.error || "Failed to submit signature.");
+  return data;
+}
+
+/** Form elements */
+const firstNameEl=document.getElementById("firstName");
+const lastNameEl=document.getElementById("lastName");
+const areaEl=document.getElementById("area");
+const emailEl=document.getElementById("email");
+const zipEl=document.getElementById("zip");
+const btnEl=document.getElementById("btnSign");
+const formEl=document.getElementById("signForm");
+
+document.getElementById("loadMore").addEventListener("click", ()=>{
+  loadPage(false).catch(err=>{
+    console.error(err);
+    alert("Unable to load more signatures right now.");
+  });
+});
+
+formEl.addEventListener("submit", async (e)=>{
+  e.preventDefault();
+
+  const firstName=firstNameEl.value.trim();
+  const lastName=lastNameEl.value.trim();
+  const area=areaEl.value.trim();
+  const email=emailEl.value.trim();
+  const zip=zipEl.value.trim();
+
+  if(!/^\d{5}$/.test(zip)){
+    alert("Please enter a valid 5-digit zip code.");
+    return;
+  }
+
+  btnEl.disabled = true;
+  const oldBtnText = btnEl.textContent;
+  btnEl.textContent = (currentLang === "es") ? "Enviando..." : (currentLang === "ht") ? "Ap voye..." : "Submitting...";
+
+  try{
+    await submitSignature({
+      firstName,
+      lastName,
+      area,
+      email,
+      zip,
+      lang: currentLang,
+      userAgent: navigator.userAgent,
+      pageUrl: location.href
+    });
+
+    // Clear fields
+    firstNameEl.value = "";
+    lastNameEl.value = "";
+    areaEl.value = "";
+    emailEl.value = "";
+    zipEl.value = "";
+
+    // Reload newest page so new signer shows immediately + total updates
+    await loadPage(true);
+
+  }catch(err){
+    console.error(err);
+    alert("Sorry — we couldn’t submit your signature. Please try again.");
+  }finally{
+    btnEl.disabled = false;
+    btnEl.textContent = oldBtnText;
+    snapBodyToTile();
+  }
+});
+
+/** Init */
+setLang("en");
+loadPage(true)
+  .then(()=> snapBodyToTile())
+  .catch(err=>{
+    console.error(err);
+    document.getElementById("sigList").innerHTML =
+      `<div class="empty">Unable to load signatures right now.</div>`;
+    snapBodyToTile();
+  });
+</script>
+
+</body>
+</html>
