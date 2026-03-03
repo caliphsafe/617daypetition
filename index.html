@@ -91,14 +91,29 @@ body{
   left:50%;
   transform:translateX(-50%);
   top:10px;
-  width:min(92%, 900px);
+
+  /* ✅ keep it inside the paper */
+  width: min(86%, 900px);
+  padding: 0 10px;
+  box-sizing: border-box;
+
   text-align:center;
+
+  /* ✅ allow long strings (email/handle) to wrap */
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
   font-size:12px; /* mobile default */
+  line-height:1.15;
   color:rgba(74,58,45,.84);
 }
-@media (min-width:721px){
+@media (max-width:720px){
   .footer-callout{
-    font-size:17px;
+    top:8px;
+    width: 84%;
+    font-size: 11px;
+    line-height: 1.1;
   }
 }
 
