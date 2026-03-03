@@ -91,32 +91,30 @@ body{
   left:50%;
   transform:translateX(-50%);
   top:10px;
-
-  /* ✅ keep it inside the paper */
-  width: min(86%, 900px);
-  padding: 0 10px;
-  box-sizing: border-box;
-
+  width:min(92%, 900px);
   text-align:center;
-
-  /* ✅ allow long strings (email/handle) to wrap */
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-
-  font-size:12px; /* mobile default */
-  line-height:1.15;
+  font-size:12px; /* mobile default (unchanged) */
   color:rgba(74,58,45,.84);
+}
+@media (min-width:721px){
+  .footer-callout{
+    font-size:17px; /* ✅ keep desktop size */
+  }
 }
 @media (max-width:720px){
   .footer-callout{
-    top:8px;
-    width: 84%;
-    font-size: 11px;
-    line-height: 1.1;
+    width:84%;
+    padding:0 10px;
+    box-sizing:border-box;
+
+    white-space:normal;
+    overflow-wrap:anywhere;
+    word-break:break-word;
+
+    font-size:11px;     /* mobile only */
+    line-height:1.1;    /* mobile only */
   }
 }
-
 
 /* Text */
 .body p{
